@@ -1,0 +1,12 @@
+name:
+  singular_underscored: client
+  plural_underscored: clients
+  short: c
+description: A Client
+storage:
+  fields:
+    - name: id
+      data_type: serial
+    - name: name
+      constraints:
+        - value: not null
