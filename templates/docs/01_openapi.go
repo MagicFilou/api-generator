@@ -7,9 +7,9 @@ import (
 const OpenAPISpec templates.Template = `
 openapi: 3.1.0
 info:
-  title: Wult internal REST API
+  title: REST API -> use some of the template info
   description: |
-    Full API specification for Wult's internal API.
+    Full API specification for template info magic API.
   version: 0.0.1
 tags:
 {{ range .TagDescriptions }}

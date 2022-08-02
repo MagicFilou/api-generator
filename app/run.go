@@ -336,7 +336,7 @@ func Run() int {
 
 	sort.Strings(globalConfigs.OpenAPIRootConfig.Tags)
 
-	err = templates.WriteRootDoc(cfg.GetConfig().Repo.Service+"/docs/wult-api.yaml", globalConfigs.OpenAPIRootConfig, docSnips.OpenAPISpec)
+	err = templates.WriteRootDoc(cfg.GetConfig().Repo.Service+"/docs/"+cfg.GetConfig().BaseDocName+".yaml", globalConfigs.OpenAPIRootConfig, docSnips.OpenAPISpec)
 	if err != nil {
 		panic(err)
 	}

@@ -13,8 +13,6 @@ const (
 
 	CONFIG_EXTENSION string = ".yaml"
 
-	BASE_DOC_NAME string = "wult-api"
-
 	MODELS_DIR   string = "models"
 	HANDLERS_DIR string = "handlers"
 	ROUTES_DIR   string = "routes"
@@ -23,17 +21,17 @@ const (
 )
 
 var (
-	DOCS_PATH     string = strings.Join([]string{OUTPUT_DIR, "docs"}, "/")
-	SCHEMAS_PATH  string = strings.Join([]string{DOCS_PATH, "schemas/"}, "/")
-	PATHS_PATH    string = strings.Join([]string{DOCS_PATH, "paths/"}, "/")
-	BASE_DOC_PATH string = strings.Join([]string{DOCS_PATH, BASE_DOC_NAME + CONFIG_EXTENSION}, "/")
+	DOCS_PATH    string = strings.Join([]string{OUTPUT_DIR, "docs"}, "/")
+	SCHEMAS_PATH string = strings.Join([]string{DOCS_PATH, "schemas/"}, "/")
+	PATHS_PATH   string = strings.Join([]string{DOCS_PATH, "paths/"}, "/")
 )
 
 var c config
 
 type config struct {
-	ENV  string
-	Repo repo
+	ENV         string
+	BaseDocName string
+	Repo        repo
 }
 
 type repo struct {
@@ -53,6 +51,8 @@ func init() {
 	c.Repo.Service = os.Getenv("SERVICE_REPO")
 	c.Repo.Migrations = os.Getenv("MIGRATIONS_DIR")
 	c.Repo.Models = os.Getenv("MODELS_REPO")
+
+	c.BaseDocName = os.Getenv("BASE_DOC_NAME")
 
 	err := checkConfig(c)
 	if err != nil {
