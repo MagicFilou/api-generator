@@ -1,17 +1,9 @@
 package resources
 
-import ()
-
 var DefaultFields []Field = []Field{
 	{
 		Name:     "id",
-		DataType: "uid",
-		Constraints: []Constraint{
-			{
-				Value: "not null",
-				Type:  "sql",
-			},
-		},
+		DataType: "serial",
 	}, {
 		Name:     "created",
 		DataType: "unix",
@@ -21,17 +13,5 @@ var DefaultFields []Field = []Field{
 				Type:  "sql",
 			},
 		},
-	}, {
-		Name:     "updated",
-		DataType: "unix",
-		Constraints: []Constraint{
-			{
-				Value: "not null",
-				Type:  "sql",
-			},
-		},
-	}, {
-		Name:     "archived",
-		DataType: "unix",
 	},
 }

@@ -19,10 +19,11 @@ type GlobalConfigs struct {
 }
 
 type FileConfig struct {
-	Name      name.Name
-	Preload   string
-	Imports   []string
-	Templates FileTemplates
+	ParentFolder string
+	Name         name.Name
+	Preload      string
+	Imports      []string
+	Templates    FileTemplates
 }
 
 type DocConfig struct {

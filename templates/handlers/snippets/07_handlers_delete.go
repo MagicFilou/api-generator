@@ -5,9 +5,9 @@ import (
 )
 
 const HandlersDelete templates.Template = `
-  func Delete(ID string) error {
+  func Delete(ID int32) error {
 
-	if ID == "0" {
+	if ID == 0 {
 		return fmt.Errorf("id out of bounds")
 	}
 

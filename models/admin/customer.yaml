@@ -1,0 +1,13 @@
+name:
+  singular_underscored: customer
+  plural_underscored: customers
+  short: c
+description: A customer
+storage:
+  fields:
+    - name: name
+      constraints:
+        - value: not null
+    - name: path
+      constraints:
+        - value: not null

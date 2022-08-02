@@ -15,7 +15,6 @@ import (
 	"api-builder/resources"
 	"api-builder/templates"
 	docSnips "api-builder/templates/docs"
-	handlerSnips "api-builder/templates/handlers/snippets"
 	routeSnips "api-builder/templates/routes/snippets"
 	"api-builder/utils"
 )
@@ -69,9 +68,17 @@ func Run() int {
 		if err != nil {
 			log.Println(err)
 		}
+		err = os.Mkdir(path+"/routes/"+cfg.GetConfig().Repo.SubModels, os.ModePerm)
+		if err != nil {
+			log.Println(err)
+		}
 
 		//Create models
 		err = os.Mkdir(path+"/models", os.ModePerm)
+		if err != nil {
+			log.Println(err)
+		}
+		err = os.Mkdir(path+"/models/"+cfg.GetConfig().Repo.SubModels, os.ModePerm)
 		if err != nil {
 			log.Println(err)
 		}
@@ -81,9 +88,13 @@ func Run() int {
 		if err != nil {
 			log.Println(err)
 		}
+		err = os.Mkdir(path+"/handlers/"+cfg.GetConfig().Repo.SubModels, os.ModePerm)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
-	resourceDirs, err := ioutil.ReadDir(cfg.GetConfig().Repo.Models)
+	resourceDirs, err := ioutil.ReadDir(cfg.GetConfig().Repo.Models + "/" + cfg.GetConfig().Repo.SubModels)
 	if err != nil {
 		panic(err)
 	}
@@ -98,7 +109,7 @@ func Run() int {
 	//go through all models dir
 	for _, dir := range resourceDirs {
 
-		bufferResource, err := resources.ResourceFromFiles(cfg.GetConfig().Repo.Models+"/"+dir.Name(), dir.Name())
+		bufferResource, err := resources.ResourceFromFiles(cfg.GetConfig().Repo.Models+"/"+cfg.GetConfig().Repo.SubModels, dir.Name())
 		if err != nil {
 			panic(err)
 		}
@@ -108,22 +119,12 @@ func Run() int {
 		allResources.Destination = cfg.GetConfig().Repo.Service
 	}
 
-	//Ignored for now
-	// allResources.Relations = allResources.GatherRelations()
-	// allResources.GatherPriorities()
-
 	for _, r := range allResources.Resources {
-
-		//State disabled
-		// if r.Deleted {
-		// 	// fmt.Println("SKIP")
-		// 	continue
-		// }
 
 		// GLOBAL ROUTES
 		globalConfigs.GinRoutesConfig.Imports = append(
 			globalConfigs.GinRoutesConfig.Imports,
-			"\""+cfg.GetConfig().Repo.Service+"/routes/"+r.Name.Singular+"\"")
+			"\"generator-gw/routes/"+cfg.GetConfig().Repo.SubModels+"/"+r.Name.Singular+"\"")
 
 		globalConfigs.GinRoutesConfig.Templates.Functions = append(
 			globalConfigs.GinRoutesConfig.Templates.Functions,
@@ -138,56 +139,26 @@ func Run() int {
 			Templates: defaultconfigs.ModelConfigDefaultTemplates,
 		}
 
-		modelConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{}
-
-		//Custom disabled
-		// if r.PluralUnderscored == "service_configurations" {
-
-		// 	// fmt.Println("WHATWHAT", r.PluralUnderscored)
-
-		// 	modelConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{modelSnips.ModelsCustomNestedServiceConfigurations}
-		// }
-
-		//Related disabled
-		// relatedResources, ok := allResources.Relations[r.Resource.PluralUnderscored]
-		// if ok {
-		// 	for _, r := range utils.DeduplicateNames(relatedResources) {
-		// 		modelConfig.Preload = resources.ToPreloads(relatedResources)
-		// 		modelConfig.Imports = append(modelConfig.Imports, "\""+cfg.GetConfig().Gitea.ServiceRepo+"/models/"+strings.ToLower(strings.ReplaceAll(r.SingularUnderscored, "_", ""))+"\"")
-		// 	}
-		// }
-
 		modelConfig.Templates.Struct = templates.Template(r.ToGoStruct())
 
 		fmt.Println(r.Storage.Config)
 
-		dir := strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.MODELS_DIR, r.Singular}, "/")
+		dir := strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.MODELS_DIR, cfg.GetConfig().Repo.SubModels, r.Singular}, "/")
 
 		modelConfig.Write(dir, dir+"/"+r.Singular+".go")
 		// END MODELS
 
 		// DOCUMENTATION
 		docTemplate := templates.DocConfig{
-			Name: r.Name,
-			//Relation disabled
-			// Typescript:         r.ToTypescriptInterface(relatedResources),
-			// TypescriptDTO:      r.ToTypescriptInterfaceDto(relatedResources),
-			// TypescriptFullFile: r.ToTypescriptFullFile(relatedResources),
-			Typescript:    r.ToTypescriptInterface(),
-			TypescriptDTO: r.ToTypescriptInterfaceDto(),
+			Name:               r.Name,
+			Typescript:         r.ToTypescriptInterface(),
+			TypescriptDTO:      r.ToTypescriptInterfaceDto(),
+			TypescriptFullFile: r.ToTypescriptFullFile(),
 			DocTemplates: templates.DocTemplates{
 				Paths:     templates.Template(docSnips.Root),
 				PathsByID: templates.Template(docSnips.ByID),
 			},
 		}
-
-		//Relation disabled
-		// if len(relatedResources) != 0 {
-		// 	docTemplate.HasRelations = true
-		// }
-
-		// fmt.Println("RELATED RESOURCES")
-		// fmt.Println(Pretty(relatedResources))
 
 		docTemplate.Component = templates.Template(r.ToOpenAPIComponent(false))
 		err = docTemplate.Write(cfg.GetConfig().Repo.Service+"/docs", r.Name, false)
@@ -210,51 +181,27 @@ func Run() int {
 
 		// HANDLERS
 		handlerConfig := templates.FileConfig{
-			Name:      r.Name,
-			Templates: defaultconfigs.HandlerConfigDefaultTemplates,
+			ParentFolder: cfg.GetConfig().Repo.SubModels,
+			Name:         r.Name,
+			Templates:    defaultconfigs.HandlerConfigDefaultTemplates,
 		}
 
-		handlerConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{}
-
-		if r.PluralUnderscored == "service_configurations" {
-			// fmt.Println("WHATWHAT", r.PluralUnderscored)
-
-			// handlerConfig.Templates.Functions[0].Content = append(handlerConfig.Templates.Functions[0].Content, handlerSnips.HandlersCustomNestedServiceConfigurations)
-			handlerConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{handlerSnips.HandlersCustomNestedServiceConfigurations}
-		}
-
-		dir = strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.HANDLERS_DIR, r.Singular}, "/")
+		dir = strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.HANDLERS_DIR, cfg.GetConfig().Repo.SubModels, r.Singular}, "/")
 		handlerConfig.Write(dir, dir+"/"+r.Singular+".go")
 		// END HANDLERS
 
 		// ROUTES
 		routeConfig := templates.FileConfig{
-			Name:      r.Name,
-			Templates: defaultconfigs.RouteConfigDefaultTemplates,
+			ParentFolder: cfg.GetConfig().Repo.SubModels,
+			Name:         r.Name,
+			Templates:    defaultconfigs.RouteConfigDefaultTemplates,
 		}
 
 		routeConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{}
 
-		if r.PluralUnderscored == "service_configurations" {
-
-			// fmt.Println("WHATWHAT", r.PluralUnderscored)
-			// content := routeConfig.Templates.Functions[0].Content
-			// content = append(content, routeSnips.RoutesCustomNestedServiceConfigurations)
-			// routeConfig.Templates.Functions[0].Content = append(routeConfig.Templates.Functions[0].Content, routeSnips.RoutesCustomNestedServiceConfigurations)
-			routeConfig.Templates.Functions[0].Content[0].Custom = []templates.Template{routeSnips.RoutesCustomNestedServiceConfigurations}
-			// fmt.Println(len(content))
-			// routeConfig.Templates.Functions[0].Content = append(routeConfig.Templates.Functions[0].Content, routeSnips.RoutesCustomNestedServiceConfigurations)
-			// fmt.Println(Pretty(routeConfig.Templates.Functions[0]))
-		}
-
-		dir = strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.ROUTES_DIR, r.Singular}, "/")
+		dir = strings.Join([]string{cfg.GetConfig().Repo.Service, cfg.ROUTES_DIR, cfg.GetConfig().Repo.SubModels, r.Singular}, "/")
 		routeConfig.Write(dir, dir+"/"+r.Singular+".go")
 		// END ROUTES
-
-		// WRITE BACK STATE
-		//state disabled
-		//r.Resource.WriteResourceFile(cfg.GetConfig().Gitea.ModelsRepo + "/models/" + r.Resource.SingularUnderscored + "/" + r.Resource.SingularUnderscored + "_state.yaml")
-		// END WRITE BACK STATE
 
 		allResources.Resources[r.SingularUnderscored] = r
 	}
@@ -273,61 +220,9 @@ func Run() int {
 		}
 	}
 
-	//Priorities disables
-	// sortedKeys := make([]string, 0, len(allResources.Priorities))
-
-	// for key := range allResources.Priorities {
-	// 	// fmt.Println(key)
-	// 	sortedKeys = append(sortedKeys, key)
-	// }
-
-	// sort.SliceStable(sortedKeys, func(i, j int) bool {
-	// 	return allResources.Priorities[sortedKeys[i]] < allResources.Priorities[sortedKeys[j]]
-	// })
-
-	// fmt.Println(Pretty(sortedKeys))
-
-	// for _, resourceName := range sortedKeys {
-
-	// 	resourceWithState := allResources.Resources[resourceName]
-	// 	// fmt.Println(Pretty(resourceWithState))
-
-	// 	// fmt.Println(resourceName)
-	// 	// fmt.Println("THIS", resourceWithState.New)
-	// 	if resourceWithState.New {
-
-	// 		err = resourceWithState.Resource.WriteSQLFiles(migrationDir, migrationVersion)
-	// 		if err != nil {
-	// 			panic(err)
-	// 		}
-
-	// 		migrationVersion++
-
-	// 		resourceWithState.State = resourceWithState.Resource
-
-	// 		err = resourceWithState.State.WriteResourceFile(cfg.GetConfig().Gitea.ModelsRepo + "/models/" + resourceWithState.Resource.SingularUnderscored + "/" + resourceWithState.Resource.SingularUnderscored + "_state.yaml")
-	// 		if err != nil {
-	// 			panic(err)
-	// 		}
-	// 	} else {
-
-	// 		// CHECK FOR CHANGES
-
-	// 		err := resourceWithState.HandleFieldChanges(migrationDir, migrationVersion)
-	// 		if err != nil {
-	// 			panic(err)
-	// 		}
-	// 	}
-
-	//}
-
 	globalConfigs.GinRoutesConfig.Imports = append(
 		globalConfigs.GinRoutesConfig.Imports,
-		"cfg \""+allResources.Destination+"/configs\"")
-
-	// fmt.Println(Pretty(globalConfigs.GinRoutesConfig))
-	// fmt.Println(len(globalConfigs.GinRoutesConfig.Imports))
-	// fmt.Println(len(globalConfigs.GinRoutesConfig.Templates.Functions))
+		"cfg \"generator-gw/configs\"")
 
 	err = templates.WriteRoutesCollectFile(globalConfigs.GinRoutesConfig, routeSnips.RoutesFunctionCollectGroups, cfg.GetConfig().Repo.Service+"/routes/routes.go")
 	if err != nil {
@@ -336,12 +231,10 @@ func Run() int {
 
 	sort.Strings(globalConfigs.OpenAPIRootConfig.Tags)
 
-	err = templates.WriteRootDoc(cfg.GetConfig().Repo.Service+"/docs/"+cfg.GetConfig().BaseDocName+".yaml", globalConfigs.OpenAPIRootConfig, docSnips.OpenAPISpec)
+	err = templates.WriteRootDoc(cfg.GetConfig().Repo.Service+"/docs/"+cfg.GetConfig().Repo.SubModels+".yaml", globalConfigs.OpenAPIRootConfig, docSnips.OpenAPISpec)
 	if err != nil {
 		panic(err)
 	}
-
-	// fmt.Println(Pretty(allResources.Relations))
 
 	return 0
 }

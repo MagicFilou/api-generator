@@ -93,8 +93,8 @@ components:
       example: 0
     
     id:
-      type: string
-      example: 760c23a4-4f9b-415c-97b0-960a23d02d24
+      type: integer
+      example: 1
 
     unix:
       type: integer
@@ -106,10 +106,6 @@ components:
         id:
           $ref: "#/components/schemas/id"
         created:
-          $ref: "#/components/schemas/unix"
-        updated:
-          $ref: "#/components/schemas/unix"
-        archived:
           $ref: "#/components/schemas/unix"
 
 paths:

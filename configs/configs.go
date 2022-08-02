@@ -29,9 +29,8 @@ var (
 var c config
 
 type config struct {
-	ENV         string
-	BaseDocName string
-	Repo        repo
+	ENV  string
+	Repo repo
 }
 
 type repo struct {
@@ -40,6 +39,7 @@ type repo struct {
 	Service    string
 	Migrations string
 	Models     string
+	SubModels  string
 }
 
 func init() {
@@ -51,8 +51,7 @@ func init() {
 	c.Repo.Service = os.Getenv("SERVICE_REPO")
 	c.Repo.Migrations = os.Getenv("MIGRATIONS_DIR")
 	c.Repo.Models = os.Getenv("MODELS_REPO")
-
-	c.BaseDocName = os.Getenv("BASE_DOC_NAME")
+	c.Repo.SubModels = os.Getenv("SUB_MODEL_REPO")
 
 	err := checkConfig(c)
 	if err != nil {

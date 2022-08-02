@@ -13,160 +13,20 @@ import (
 
 type AllResources struct {
 	Destination string
-	//Relations   map[string][]name.Name
-	//Priorities  map[string]int
-	Resources map[string]Resource
+	Resources   map[string]Resource
 }
-
-//Relations diabled for now 010822
-// func (allR AllResources) GatherRelations() (relations map[string][]name.Name) {
-
-// 	relations = make(map[string][]name.Name)
-
-// 	for _, r := range allR.Resources {
-
-// 		relatedResources, ok := r.Resource.GetRelations()
-// 		if !ok {
-// 			continue
-// 		}
-
-// 		for _, relatedName := range relatedResources {
-// 			relations[relatedName.PluralUnderscored] = append(relations[relatedName.PluralUnderscored], r.Name)
-// 		}
-// 	}
-
-// 	return relations
-// }
-
-//Not sure What priorities are for but let's ignore it for now
-// // NOTE: this is not the way to do it. I'm sorry. Frankly, im embarrassed.
-// func (allR *AllResources) GatherPriorities() {
-
-// 	allR.Priorities = make(map[string]int)
-
-// 	for _, r := range allR.Resources {
-
-// 		allR.Priorities[r.Resource.SingularUnderscored] = 1
-
-// 		relatedResources, ok := r.Resource.GetRelations()
-// 		if ok {
-// 			allR.Priorities[r.Resource.SingularUnderscored]++
-// 		} else {
-// 			continue
-// 		}
-
-// 		for _, relatedResource := range relatedResources {
-// 			value, ok := allR.Priorities[relatedResource.SingularUnderscored]
-// 			if ok {
-// 				allR.Priorities[r.Resource.SingularUnderscored] = value + 1
-// 				continue
-// 			} else {
-// 				allR.Priorities[relatedResource.SingularUnderscored] = allR.Priorities[r.SingularUnderscored] + 1
-// 			}
-// 		}
-// 	}
-// }
-
-// type ResourceWithState struct {
-// 	Resource
-// 	New     bool
-// 	Deleted bool
-// 	State   Resource
-// }
-
-// func ResourceWithStateFromFiles(rootPath string, name string) (r ResourceWithState, err error) {
-
-// 	// Get resource file
-// 	r.Resource, err = ResourceFromFile(rootPath + "/" + name + ".yaml")
-// 	if err != nil {
-// 		// If this file does not exist, the resource has been marked for deletion
-// 		if strings.Contains(err.Error(), "no such file or directory") {
-// 			r.Deleted = true
-// 		} else {
-// 			return r, err
-// 		}
-// 	}
-
-// 	// Get state file
-// 	r.State, err = ResourceFromFile(rootPath + "/" + name + "_state.yaml")
-// 	if err != nil {
-// 		// If this file does not exist, the resource is new
-// 		if strings.Contains(err.Error(), "no such file or directory") {
-// 			r.New = true
-// 		} else {
-// 			return r, err
-// 		}
-// 	}
-
-// 	return r, nil
-// }
 
 func ResourceFromFiles(rootPath string, name string) (r Resource, err error) {
 
 	// Get resource file
-	r, err = ResourceFromFile(rootPath + "/" + name + ".yaml")
+	r, err = ResourceFromFile(rootPath + "/" + name)
 	if err != nil {
-		//To do with states
-		// If this file does not exist, the resource has been marked for deletion
-		// if strings.Contains(err.Error(), "no such file or directory") {
-		// 	r.Deleted = true
-		// } else {
+
 		return r, err
-		//}
 	}
 
 	return r, nil
 }
-
-// func (r ResourceWithState) calculateChanges() (newFields map[string]Field, removedFields map[string]Field, changed bool) {
-
-// 	newFields = make(map[string]Field)
-// 	removedFields = make(map[string]Field)
-
-// 	if !reflect.DeepEqual(r.Resource.Fields, r.State.Fields) {
-
-// 		resourceFields := make(map[string]Field)
-// 		stateFields := make(map[string]Field)
-
-// 		for _, resourceField := range r.Resource.Fields {
-
-// 			resourceFields[resourceField.Name] = resourceField
-// 		}
-
-// 		for _, stateField := range r.State.Fields {
-
-// 			stateFields[stateField.Name] = stateField
-// 		}
-
-// 		for key, value := range stateFields {
-// 			_, ok := resourceFields[key]
-// 			if !ok {
-// 				changed = true
-// 				removedFields[key] = value
-// 			}
-// 		}
-
-// 		for key, value := range resourceFields {
-// 			_, ok := stateFields[key]
-// 			if !ok {
-// 				changed = true
-// 				newFields[key] = value
-// 			}
-// 		}
-// 	}
-
-// 	if changed {
-
-// 		for key, field := range newFields {
-// 			fmt.Println("FIELD ADDED: ", key, field)
-// 		}
-// 		for key, field := range removedFields {
-// 			fmt.Println("FIELD REMOVED: ", key, field)
-// 		}
-// 	}
-
-// 	return newFields, removedFields, changed
-// }
 
 type Resource struct {
 	name.Name   `yaml:"name,omitempty"`

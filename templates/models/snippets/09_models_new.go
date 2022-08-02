@@ -12,9 +12,7 @@ func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) New() error {
 		return err
 	}
 
-  {{ .Name.Short }}.ID = uuid.New().String()
   {{ .Name.Short }}.Created = int(time.Now().Unix())
-  {{ .Name.Short }}.Updated = int(time.Now().Unix())
 
 	result := db.Create(&{{ .Name.Short }})
 	if result.Error != nil {

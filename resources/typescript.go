@@ -82,27 +82,26 @@ func (r Resource) ToTypescriptInterfaceDto() string {
 	return b.String()
 }
 
-//Typescript fullfile disabled
-// func (r Resource) ToTypescriptFullFile() string {
+func (r Resource) ToTypescriptFullFile() string {
 
-// 	b := strings.Builder{}
+	b := strings.Builder{}
 
-// 	for index, r := range utils.DeduplicateNames(relatedResources) {
-// 		if index != 0 {
-// 			b.WriteString("        ")
-// 		}
-// 		b.WriteString("import { " + strcase.ToCamel(r.SingularUnderscored) + " } from './" + strcase.ToCamel(r.SingularUnderscored) + "'\n")
-// 	}
+	// for index, r := range utils.DeduplicateNames(relatedResources) {
+	// 	if index != 0 {
+	// 		b.WriteString("        ")
+	// 	}
+	// 	b.WriteString("import { " + strcase.ToCamel(r.SingularUnderscored) + " } from './" + strcase.ToCamel(r.SingularUnderscored) + "'\n")
+	// }
 
-// 	b.WriteString("\n")
+	b.WriteString("\n")
 
-// 	// b.WriteString("          " + r.ToTypescriptInterface(relatedResources))
-// 	b.WriteString("        " + r.ToTypescriptInterface(relatedResources))
+	// b.WriteString("          " + r.ToTypescriptInterface(relatedResources))
+	b.WriteString("        " + r.ToTypescriptInterface())
 
-// 	b.WriteString("\n")
+	b.WriteString("\n")
 
-// 	// b.WriteString("          " + r.ToTypescriptInterfaceDto(relatedResources))
-// 	b.WriteString("        " + r.ToTypescriptInterfaceDto(relatedResources))
+	// b.WriteString("          " + r.ToTypescriptInterfaceDto(relatedResources))
+	b.WriteString("        " + r.ToTypescriptInterfaceDto())
 
-// 	return b.String()
-// }
+	return b.String()
+}

@@ -15,7 +15,6 @@ import (
     {{ . }}
   {{ end }}
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

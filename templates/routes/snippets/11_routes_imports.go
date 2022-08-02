@@ -13,8 +13,8 @@ import (
 
 	cfg "generator-gw/configs"
 	l "generator-gw/logger"
-	{{ .Name.Singular }}handler "generator-gw/handlers/{{ .Name.Singular }}"
-  {{ .Name.Singular }}model "generator-gw/models/{{ .Name.Singular }}"
+	{{ .Name.Singular }}handler "generator-gw/handlers/{{ .ParentFolder }}/{{ .Name.Singular }}"
+  {{ .Name.Singular }}model "generator-gw/models/{{ .ParentFolder }}/{{ .Name.Singular }}"
 
 	"generator-gw/mw"
 	

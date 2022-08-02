@@ -1,0 +1,14 @@
+name:
+  singular_underscored: data_storage
+  plural_underscored: data_storages
+  short: ds
+description: Types of data storages
+storage:
+  fields:
+    - name: name
+      constraints:
+        - value: not null
+    - name: type_id
+      data_type: integer
+      constraints:
+        - value: not null

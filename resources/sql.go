@@ -5,21 +5,12 @@ import (
 	"io/ioutil"
 	"strings"
 
-	cfg "api-builder/configs"
 	"api-builder/utils/translator"
 )
 
 func (r Resource) ToSQLCreateTable() string {
 
 	b := strings.Builder{}
-
-	b.WriteString("CREATE OR REPLACE FUNCTION updated_timestamp()\n")
-	b.WriteString("RETURNS TRIGGER AS $updated_timestamp$\n")
-	b.WriteString("BEGIN\n")
-	b.WriteString("  NEW.updated = date_part('epoch'::text, now());\n")
-	b.WriteString("  RETURN NEW;\n")
-	b.WriteString("END;\n")
-	b.WriteString("$updated_timestamp$ language 'plpgsql';\n\n")
 
 	b.WriteString("CREATE TABLE IF NOT EXISTS\n")
 	b.WriteString(r.PluralUnderscored + " (\n")
@@ -30,7 +21,7 @@ func (r Resource) ToSQLCreateTable() string {
 		if field.Name == "id" {
 			b.WriteString(" PRIMARY KEY")
 		}
-		if field.Name == "created" || field.Name == "updated" {
+		if field.Name == "created" {
 			b.WriteString(" DEFAULT date_part('epoch'::text, now())")
 		}
 		if index != len(DefaultFields)-1 || len(r.Storage.Fields) != 0 {
@@ -64,10 +55,6 @@ func (r Resource) ToSQLCreateTable() string {
 
 	b.WriteString("\n);\n")
 
-	if r.Storage.Config.DefaultFields {
-		b.WriteString("\nCREATE TRIGGER " + cfg.UPDATE_TIMESTAMP_TRIGGER + " BEFORE UPDATE ON " + r.PluralUnderscored + " FOR EACH ROW EXECUTE FUNCTION " + cfg.UPDATE_TIMESTAMP_TRIGGER + "();")
-	}
-
 	return b.String()
 }
 
@@ -75,9 +62,6 @@ func (r Resource) ToSQLDropTable() string {
 
 	b := strings.Builder{}
 
-	if r.Storage.Config.DefaultFields {
-		b.WriteString("DROP TRIGGER IF EXISTS " + cfg.UPDATE_TIMESTAMP_TRIGGER + " ON " + r.PluralUnderscored + ";\n")
-	}
 	b.WriteString("DROP TABLE IF EXISTS " + r.PluralUnderscored + ";")
 
 	return b.String()

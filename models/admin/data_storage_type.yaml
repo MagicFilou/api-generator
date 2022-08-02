@@ -1,0 +1,13 @@
+name:
+  singular_underscored: data_storage_type
+  plural_underscored: data_storage_types
+  short: dst
+description: Types of data storages
+storage:
+  fields:
+    - name: name
+      constraints:
+        - value: not null
+    - name: type
+      constraints:
+        - value: not null
