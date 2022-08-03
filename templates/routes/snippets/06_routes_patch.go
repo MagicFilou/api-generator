@@ -15,7 +15,7 @@ const RoutesPatch templates.Template = `
 				return
 			}
 
-			if {{ .Name.Singular }}.ID == "" {
+			if {{ .Name.Singular }}.ID == 0 {
 				c.AbortWithStatusJSON(422, gin.H{
 					"status": "failure",
 					"error":  "missing ID",

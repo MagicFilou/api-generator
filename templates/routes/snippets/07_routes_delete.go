@@ -9,8 +9,18 @@ const RoutesDelete templates.Template = `
       func(c *gin.Context) {
 
 			ID := c.Param("id")
+			intID, err := strconv.Atoi(ID)
 
-			err := {{ .Name.Singular }}handler.Delete(ID)
+			if err != nil {
+				c.AbortWithStatusJSON(422, gin.H{
+					"status": "failure",
+					"error":  "missing ID",
+				})
+				return
+			}
+
+			err = {{ .Name.Singular }}handler.Delete(int32(intID))
+
 			if err != nil {
 				c.AbortWithStatusJSON(checkError(err))
 				return
