@@ -105,6 +105,7 @@ func Run() int {
 	)
 
 	allResources.Resources = make(map[string]resources.Resource)
+	globalConfigs.GinRoutesConfig.ParentFolder = cfg.GetConfig().Repo.SubModels
 
 	//go through all models dir
 	for _, dir := range resourceDirs {
