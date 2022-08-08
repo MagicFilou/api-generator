@@ -4,24 +4,12 @@ import (
 	"api-builder/templates"
 )
 
-//relations disabled
-//after tags insert
-// {{ if .HasRelations }}
-// parameters:
-//   - in: query
-//     name: preload
-//     description: ""
-//     required: false
-//     schema:
-//       type: boolean
-// {{ end }}
 const Root templates.Template = `
 get:
   summary: '{{ .Name.Spaced }}: Get all'
   description: This endpoint retrieves and returns all {{ .Name.PluralUnderscored }}.
   tags:
     - {{ .Name.CamelLower }}
-
   responses:
     "200":
       description: Success
@@ -138,16 +126,6 @@ patch:
 
 `
 
-//relations disabled
-//After first params
-// {{ if .HasRelations }}
-// - in: query
-//   name: preload
-//   description: ""
-//   required: false
-//   schema:
-//     type: boolean
-// {{ end }}
 const ByID templates.Template = `
 
 get:

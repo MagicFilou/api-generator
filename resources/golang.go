@@ -3,8 +3,6 @@ package resources
 import (
 	"strings"
 
-	"api-builder/utils"
-	"api-builder/utils/name"
 	"api-builder/utils/translator"
 
 	"github.com/iancoleman/strcase"
@@ -52,17 +50,6 @@ func (r Resource) ToGoStruct() string {
 	// }
 
 	b.WriteString("}")
-
-	return b.String()
-}
-
-func ToPreloads(relatedResources []name.Name) string {
-
-	b := strings.Builder{}
-
-	for _, r := range utils.DeduplicateNames(relatedResources) {
-		b.WriteString(r.ToPreload())
-	}
 
 	return b.String()
 }

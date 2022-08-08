@@ -59,8 +59,3 @@ func (n *Name) Build() error {
 
 	return nil
 }
-
-func (n Name) ToPreload() string {
-
-	return ".Preload(\"" + strcase.ToCamel(n.PluralUnderscored) + "\")"
-}

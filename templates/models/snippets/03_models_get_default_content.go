@@ -6,24 +6,17 @@ import (
 
 const ModelsGetDefaultContent templates.Template = `
 
-func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) GetDefaultContent(preload bool) (bool, error) {
+func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) GetDefaultContent() (bool, error) {
 
 	db, err := models.GetConDefaultContent()
 	if err != nil {
 		return false, err
 	}
 
-  {{ if .Preload }}
-	var result *gorm.DB
 
-	if preload {
-		result = db{{ .Preload }}.Find(&{{ .Name.Short }})
-	} else {
-		result = db.Find(&{{ .Name.Short }})
-	}
-  {{ else }}
-    result := db.Find(&{{ .Name.Short }})
-  {{ end }}
+	var result *gorm.DB
+		
+  result := db.Find(&{{ .Name.Short }})
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

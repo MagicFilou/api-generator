@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-// TODO: lifted from old generator. Verify its not shit later.
 func FileVersion(path string) (version int, err error) {
 
 	var versions []int

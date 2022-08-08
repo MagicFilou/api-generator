@@ -9,9 +9,7 @@ const RoutesGetAll templates.Template = `
 			// cache.CacheByRequestPath(redisStore, 2*time.Minute),
 			func(c *gin.Context) {
 
-				preload, _ := strconv.ParseBool(c.DefaultQuery("preload", "false"))
-
-  {{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll(preload)
+  {{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll()
 				if err != nil {
 					c.AbortWithStatusJSON(checkError(err))
 					return

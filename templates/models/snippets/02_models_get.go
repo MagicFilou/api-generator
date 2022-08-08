@@ -6,24 +6,16 @@ import (
 
 const ModelsGet templates.Template = `
 
-func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) Get(preload bool) error {
+func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) Get() error {
 
 	db, err := models.GetCon()
 	if err != nil {
 		return err
 	}
 
-  {{ if .Preload }}
 	var result *gorm.DB
 
-	if preload {
-		result = db{{ .Preload }}.Find(&{{ .Name.Short }})
-	} else {
-		result = db.Find(&{{ .Name.Short }})
-	}
-  {{ else }}
-    result := db.Find(&{{ .Name.Short }})
-  {{ end }}
+	result = db.Find(&{{ .Name.Short }})
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

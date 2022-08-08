@@ -5,24 +5,16 @@ import (
 )
 
 const ModelsGetAll templates.Template = `
-func GetAll(preload bool) ({{ .Name.Plural }} []{{ .Name.CamelUpper }}, err error) {
+func GetAll() ({{ .Name.Plural }} []{{ .Name.CamelUpper }}, err error) {
 
 	db, err := models.GetCon()
 	if err != nil {
   return {{ .Name.Plural }}, err
 	}
 
-  {{ if .Preload }}
 	var result *gorm.DB
 
-	if preload {
-    result = db{{ .Preload }}.Find(&{{ .Name.Plural }})
-	} else {
-		result = db.Find(&{{ .Name.Plural }})
-	}
-  {{ else }}
-	result := db.Find(&{{ .Name.Plural }})
-  {{ end }}
+	result = db.Find(&{{ .Name.Plural }})
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

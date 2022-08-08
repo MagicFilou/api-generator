@@ -21,7 +21,6 @@ type GlobalConfigs struct {
 type FileConfig struct {
 	ParentFolder string
 	Name         name.Name
-	Preload      string
 	Imports      []string
 	Templates    FileTemplates
 }

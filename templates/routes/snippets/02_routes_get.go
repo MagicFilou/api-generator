@@ -20,9 +20,7 @@ const RoutesGet templates.Template = `
 					return
 				}
 
-				preload, _ := strconv.ParseBool(c.DefaultQuery("preload", "false"))
-
-  {{ .Name.Singular }}, err := {{ .Name.Singular }}handler.Get(int32(intID), preload)
+  {{ .Name.Singular }}, err := {{ .Name.Singular }}handler.Get(int32(intID))
 				if err != nil {
 					c.AbortWithStatusJSON(checkError(err))
 					return

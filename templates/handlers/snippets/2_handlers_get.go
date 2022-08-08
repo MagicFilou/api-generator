@@ -5,7 +5,7 @@ import (
 )
 
 const HandlersGet templates.Template = `
-func Get(ID int32, preload bool) ({{ .Name.Short }} {{ .Name.Singular }}.{{ .Name.CamelUpper }}, err error) {
+func Get(ID int32) ({{ .Name.Short }} {{ .Name.Singular }}.{{ .Name.CamelUpper }}, err error) {
 
 	if ID == 0 {
 		return {{ .Name.Short }}, fmt.Errorf("id out of bounds")
@@ -13,7 +13,7 @@ func Get(ID int32, preload bool) ({{ .Name.Short }} {{ .Name.Singular }}.{{ .Nam
 
   {{ .Name.Short }}.ID = ID
 
-  err = {{ .Name.Short }}.Get(preload)
+  err = {{ .Name.Short }}.Get()
 
 	return {{ .Name.Short }}, err
 }
