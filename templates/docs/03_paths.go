@@ -128,56 +128,6 @@ patch:
 
 const ByID templates.Template = `
 
-get:
-  summary: '{{ .Name.Spaced }}: Get one'
-  description: This endpoint retrieves and returns a single {{ .Name.SingularUnderscored }}, referenced by its ID.
-  tags:
-    - {{ .Name.CamelLower }}
-  x-codeSamples:
-    - lang: 'TypeScript Interface'
-      source: |
-        {{ .Typescript }}
-    - lang: 'TypeScript Interface DTO'
-      source: |
-        {{ .TypescriptDTO }}
-    - lang: 'TypeScript Interface File'
-      source: |
-        {{ .TypescriptFullFile }}
-  parameters:
-    - in: query
-      name: id
-      description: A single ID
-      required: true
-      schema:
-        type: string
-
-  responses:
-    "200":
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                $ref: "#/components/schemas/Status" 
-              data:
-                allOf:
-                  - $ref: "#/components/schemas/SharedModel"
-                  - $ref: "../schemas/{{ .Name.CamelLower }}.yaml"
-    "204":
-      description: Empty
-      $ref: "#/components/responses/204Empty"
-    "400":
-      description: Request malformed
-      $ref: "#/components/responses/400BadRequest"
-    "401":
-      description: Unauthorized
-      $ref: "#/components/responses/401Unauthorized"
-    "500":
-      description: Server error
-      $ref: "#/components/responses/500ServerError"
-
 delete:
   summary: '{{ .Name.Spaced }}: Delete one'
   description: This endpoint deletes a single {{ .Name.SingularUnderscored }}, referenced by its ID.

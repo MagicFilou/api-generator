@@ -5,6 +5,6 @@ import (
 )
 
 const RoutesDeclarationGroup templates.Template = `
-  {{ .Name.CamelLower }}Routes := r.Group("/{{ .Name.Plural }}", mw.AuthMW(l.GetLogger()))
+  {{ .Name.CamelLower }}Routes := r.Group("/{{ .ParentFolder }}/{{ .Name.Plural }}", mw.AuthMW(l.GetLogger()))
 	{
 `

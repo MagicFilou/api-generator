@@ -21,7 +21,6 @@ var RouteConfigDefaultTemplates templates.FileTemplates = templates.FileTemplate
 				Templates: []templates.Template{
 					rSnip.RoutesDeclarationGroup,
 					rSnip.RoutesGetAll,
-					rSnip.RoutesGet,
 					rSnip.RoutesCount,
 					rSnip.RoutesNew,
 					rSnip.RoutesPatch,
@@ -46,7 +45,6 @@ var HandlerConfigDefaultTemplates templates.FileTemplates = templates.FileTempla
 			Content: []templates.ContentTemplates{{
 				Templates: []templates.Template{
 					hSnip.HandlersGetAll,
-					hSnip.HandlersGet,
 					hSnip.HandlersCount,
 					hSnip.HandlersNew,
 					hSnip.HandlersPatch,
@@ -68,7 +66,6 @@ var ModelConfigDefaultTemplates templates.FileTemplates = templates.FileTemplate
 			Content: []templates.ContentTemplates{{
 				Templates: []templates.Template{
 					mSnip.ModelsGetAll,
-					mSnip.ModelsGet,
 					mSnip.ModelsCount,
 					mSnip.ModelsNew,
 					mSnip.ModelsPatch,
