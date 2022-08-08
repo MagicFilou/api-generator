@@ -24,6 +24,6 @@ func CollectGroups(r *gin.Engine) {
 
 func documentation(r *gin.Engine) {
 
-	r.StaticFile("/docs", "./" + cfg.GetConfig().Documentation.Dir + "/{{ .ParentFolder }}/" + cfg.GetConfig().Documentation.HTML)
+	r.StaticFile("/docs/{{ .ParentFolder }}", "./" + cfg.GetConfig().Documentation.Dir + "/{{ .ParentFolder }}/" + cfg.GetConfig().Documentation.HTML)
 }
 `
