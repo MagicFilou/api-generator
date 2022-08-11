@@ -8,7 +8,7 @@ const ModelsCount templates.Template = `
 
 func Count(distinct, group string) (ca []models.CountData, err error) {
 
-	db, err := models.GetCon()
+	db, err := clients.GetCon()
 	if err != nil {
 		return ca, err
 	}

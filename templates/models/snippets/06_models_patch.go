@@ -8,7 +8,7 @@ const ModelsPatch templates.Template = `
 
 func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) Patch() error {
 
-	db, err := models.GetCon()
+	db, err := clients.GetCon()
 	if err != nil {
 		return err
 	}

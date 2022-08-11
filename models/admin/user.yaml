@@ -1,0 +1,19 @@
+name:
+  singular_underscored: user
+  plural_underscored: users
+  short: u
+description: A user
+storage:
+  fields:
+    - name: email
+      constraints:
+        - value: not null
+    - name: password
+      constraints:
+        - value: not null
+    - name: customer_id
+      data_type: integer
+      constraints:
+        - value: not null
+    - name: app_token
+    - name: api_token

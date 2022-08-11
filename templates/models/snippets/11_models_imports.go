@@ -11,6 +11,7 @@ import (
   "time"
 
 	"generator-gw/models"
+	"generator-gw/clients"
   {{ range .Imports }}
     {{ . }}
   {{ end }}

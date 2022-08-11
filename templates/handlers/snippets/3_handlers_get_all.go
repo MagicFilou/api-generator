@@ -5,8 +5,8 @@ import (
 )
 
 const HandlersGetAll templates.Template = `
-func GetAll() ([]{{ .Name.Singular }}.{{ .Name.CamelUpper }}, error) {
+func GetAll(wds []models.WhereData) ([]{{ .Name.Singular }}.{{ .Name.CamelUpper }}, error) {
 
-	return {{ .Name.Singular }}.GetAll()
+	return {{ .Name.Singular }}.GetAll(wds)
 }
 `

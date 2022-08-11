@@ -7,7 +7,7 @@ import (
 const ModelsNew templates.Template = `
 func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) New() error {
 
-	db, err := models.GetCon()
+	db, err := clients.GetCon()
 	if err != nil {
 		return err
 	}

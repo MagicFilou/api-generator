@@ -9,7 +9,20 @@ const RoutesGetAll templates.Template = `
 			// cache.CacheByRequestPath(redisStore, 2*time.Minute),
 			func(c *gin.Context) {
 
-  {{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll()
+				count := 1
+				ws := []models.WhereData{}
+
+				for {
+					w, ok := util.ExtractAtN(c, count)
+					if !ok {
+						break
+					}
+
+					ws = append(ws, w)
+					count++
+				}
+
+  {{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll(ws)
 				if err != nil {
 					c.AbortWithStatusJSON(checkError(err))
 					return

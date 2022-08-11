@@ -8,7 +8,7 @@ const ModelsDelete templates.Template = `
 
   func ({{ .Name.Short }} {{ .Name.CamelUpper }}) Delete() error {
 
-	db, err := models.GetCon()
+	db, err := clients.GetCon()
 	if err != nil {
 		return err
 	}
