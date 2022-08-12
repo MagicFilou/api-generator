@@ -16,4 +16,3 @@ storage:
       constraints:
         - value: not null
     - name: app_token
-    - name: api_token

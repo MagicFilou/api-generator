@@ -12,3 +12,10 @@ storage:
       data_type: integer
       constraints:
         - value: not null
+    - name: customer_id
+      data_type: integer
+      constraints:
+        - value: not null
+    - name: api_token
+      constraints:
+        - value: not null
