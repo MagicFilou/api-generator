@@ -193,6 +193,7 @@ func Run() int {
 
 		// ROUTES
 		routeConfig := templates.FileConfig{
+			SecretType:   cfg.GetConfig().SecretType,
 			ParentFolder: cfg.GetConfig().Repo.SubModels,
 			Name:         r.Name,
 			Templates:    defaultconfigs.RouteConfigDefaultTemplates,

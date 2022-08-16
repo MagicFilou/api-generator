@@ -29,8 +29,9 @@ var (
 var c config
 
 type config struct {
-	ENV  string
-	Repo repo
+	ENV        string
+	SecretType string
+	Repo       repo
 }
 
 type repo struct {
@@ -45,6 +46,8 @@ type repo struct {
 func init() {
 
 	c.ENV = os.Getenv("ENV")
+
+	c.SecretType = os.Getenv("SECRET_TYPE")
 
 	c.Repo.User = os.Getenv("USER")
 	c.Repo.Key = os.Getenv("KEY")

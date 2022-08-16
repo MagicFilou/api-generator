@@ -19,6 +19,7 @@ type GlobalConfigs struct {
 }
 
 type FileConfig struct {
+	SecretType   string
 	ParentFolder string
 	Name         name.Name
 	Imports      []string
