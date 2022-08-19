@@ -1,0 +1,13 @@
+name:
+  singular_underscored: tableone
+  plural_underscored: tableones
+  short: t
+description: A table given 1
+storage:
+  fields:
+    - name: name
+      constraints:
+        - value: not null
+    - name: table1_attribute
+      constraints:
+        - value: not null

@@ -19,3 +19,7 @@ storage:
     - name: api_token
       constraints:
         - value: not null
+    - name: path
+      constraints:
+        - value: not null
+        - value: unique

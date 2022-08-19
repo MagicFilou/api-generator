@@ -8,6 +8,4 @@ storage:
     - name: name
       constraints:
         - value: not null
-    - name: path
-      constraints:
-        - value: not null
+        - value: unique

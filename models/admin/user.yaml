@@ -8,6 +8,7 @@ storage:
     - name: email
       constraints:
         - value: not null
+        - value: unique
     - name: password
       constraints:
         - value: not null
