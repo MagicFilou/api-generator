@@ -6,9 +6,9 @@ import (
 
 const ModelsCount templates.Template = `
 
-func Count(distinct, group string) (ca []models.CountData, err error) {
+func Count(distinct, group string, conKey int) (ca []models.CountData, err error) {
 
-	db, err := clients.GetCon()
+	db, err := clients.GetCon(conKey)
 	if err != nil {
 		return ca, err
 	}

@@ -11,7 +11,13 @@ const RoutesCount templates.Template = `
 			distinct := c.DefaultQuery("distinct", "")
 			group := c.DefaultQuery("group", "")
 
-			counts, err := {{ .Name.Singular }}handler.Count(distinct, group)
+			storageID, ok := c.Get(mw.KEY_STORAGE)
+				if !ok {
+					c.AbortWithStatusJSON(checkError(fmt.Errorf("No storage ID")))
+					return
+				}
+
+			counts, err := {{ .Name.Singular }}handler.Count(distinct, group, int(storageID.(int32)))
 			if err != nil {
 				c.AbortWithStatusJSON(checkError(err))
 				return

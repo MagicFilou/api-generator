@@ -6,9 +6,9 @@ import (
 
 const ModelsPatch templates.Template = `
 
-func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) Patch() error {
+func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) Patch(conKey int) error {
 
-	db, err := clients.GetCon()
+	db, err := clients.GetCon(conKey)
 	if err != nil {
 		return err
 	}

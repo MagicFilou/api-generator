@@ -23,7 +23,13 @@ const RoutesPatch templates.Template = `
 				return
 			}
 
-			err := {{ .Name.Singular }}handler.Patch(&{{ .Name.Singular }})
+			storageID, ok := c.Get(mw.KEY_STORAGE)
+				if !ok {
+					c.AbortWithStatusJSON(checkError(fmt.Errorf("No storage ID")))
+					return
+				}
+
+			err := {{ .Name.Singular }}handler.Patch(&{{ .Name.Singular }}, int(storageID.(int32)))
 			if err != nil {
 				c.AbortWithStatusJSON(checkError(err))
 				return

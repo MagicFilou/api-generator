@@ -22,7 +22,13 @@ const RoutesGetAll templates.Template = `
 					count++
 				}
 
-  {{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll(ws)
+				storageID, ok := c.Get(mw.KEY_STORAGE)
+				if !ok {
+					c.AbortWithStatusJSON(checkError(fmt.Errorf("No storage ID")))
+					return
+				}
+
+  			{{ .Name.Plural }}, err := {{ .Name.Singular }}handler.GetAll(ws, int(storageID.(int32)))
 				if err != nil {
 					c.AbortWithStatusJSON(checkError(err))
 					return

@@ -5,9 +5,9 @@ import (
 )
 
 const ModelsGetAll templates.Template = `
-func GetAll(wds []models.WhereData) ({{ .Name.Plural }} []{{ .Name.CamelUpper }}, err error) {
+func GetAll(wds []models.WhereData, conKey int) ({{ .Name.Plural }} []{{ .Name.CamelUpper }}, err error) {
 
-	db, err := clients.GetCon()
+	db, err := clients.GetCon(conKey)
 	if err != nil {
   return {{ .Name.Plural }}, err
 	}

@@ -6,9 +6,9 @@ import (
 
 const ModelsDelete templates.Template = `
 
-  func ({{ .Name.Short }} {{ .Name.CamelUpper }}) Delete() error {
+  func ({{ .Name.Short }} {{ .Name.CamelUpper }}) Delete(conKey int) error {
 
-	db, err := clients.GetCon()
+	db, err := clients.GetCon(conKey)
 	if err != nil {
 		return err
 	}

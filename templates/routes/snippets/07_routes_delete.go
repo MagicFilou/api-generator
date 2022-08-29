@@ -19,7 +19,13 @@ const RoutesDelete templates.Template = `
 				return
 			}
 
-			err = {{ .Name.Singular }}handler.Delete(int32(intID))
+			storageID, ok := c.Get(mw.KEY_STORAGE)
+				if !ok {
+					c.AbortWithStatusJSON(checkError(fmt.Errorf("No storage ID")))
+					return
+				}
+
+			err = {{ .Name.Singular }}handler.Delete(int32(intID), int(storageID.(int32)))
 
 			if err != nil {
 				c.AbortWithStatusJSON(checkError(err))

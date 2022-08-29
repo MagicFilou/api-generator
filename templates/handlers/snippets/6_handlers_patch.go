@@ -5,8 +5,8 @@ import (
 )
 
 const HandlersPatch templates.Template = `
-func Patch({{ .Name.Short }} *{{ .Name.Singular }}.{{ .Name.CamelUpper }}) error {
+func Patch({{ .Name.Short }} *{{ .Name.Singular }}.{{ .Name.CamelUpper }}, conKey int) error {
 
-	return {{ .Name.Short }}.Patch()
+	return {{ .Name.Short }}.Patch(conKey)
 }
 `

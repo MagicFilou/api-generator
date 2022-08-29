@@ -7,7 +7,8 @@ import (
 const RoutesDeclarationGroup templates.Template = `
   {{ .Name.CamelLower }}Routes := r.Group("/{{ .ParentFolder }}/{{ .Name.Plural }}", 
 	mw.AuthMW("{{ .SecretType }}", l.GetLogger()),
-	{{ if eq .SecretType "API" }}	mw.CheckCompany(1), {{ end }}
+	{{ if eq .SecretType "API" }}	mw.CheckCompany(1),
+	mw.GetStorageKey(), {{ end }}
 	)
 	{
 `

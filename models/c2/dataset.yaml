@@ -1,0 +1,9 @@
+name:
+  singular_underscored: dataset
+  plural_underscored: datasets
+  short: d
+description: A dataset
+storage:
+  fields:
+    - name: name
+    - name: source_type

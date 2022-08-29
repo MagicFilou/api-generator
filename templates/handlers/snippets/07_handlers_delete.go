@@ -5,7 +5,7 @@ import (
 )
 
 const HandlersDelete templates.Template = `
-  func Delete(ID int32) error {
+  func Delete(ID int32, conKey int) error {
 
 	if ID == 0 {
 		return fmt.Errorf("id out of bounds")
@@ -15,6 +15,6 @@ const HandlersDelete templates.Template = `
 
   {{ .Name.Short }}.ID = ID
 
-  return {{ .Name.Short }}.Delete()
+  return {{ .Name.Short }}.Delete(conKey)
   }
 `

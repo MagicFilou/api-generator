@@ -5,9 +5,9 @@ import (
 )
 
 const ModelsNew templates.Template = `
-func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) New() error {
+func ({{ .Name.Short }} *{{ .Name.CamelUpper }}) New(conKey int) error {
 
-	db, err := clients.GetCon()
+	db, err := clients.GetCon(conKey)
 	if err != nil {
 		return err
 	}
